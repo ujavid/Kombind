@@ -11,30 +11,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import com.android.databinding.library.baseAdapters.BR
 import com.umairjavid.kombind.ext.registerViewActionObserver
 import com.umairjavid.kombind.ui.KombindActivity
 import com.umairjavid.kombind.ui.KombindViewModel
 
-abstract class KombindDialogFragment<VM: KombindViewModel, VMF: ViewModelProvider.Factory, VDB: ViewDataBinding> : DialogFragment() {
+abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment() {
     protected abstract val viewModelClass: Class<VM>
     protected abstract val layoutResId: Int
-    protected abstract val viewModelVariableId: Int
-    protected lateinit var viewModelFactory: VMF
-    protected lateinit var viewModel: VM
-    protected lateinit var viewBinding: VDB
+    protected lateinit var viewBinding: ViewDataBinding
+    lateinit var viewModel: VM
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setStyle(STYLE_NO_FRAME, 0)
         onBeforeViewLoad(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, provideViewModelFactory()).get(viewModelClass)
+        viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
         viewBinding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(viewModelClass)
-        viewModel.activityViewModel = (activity as KombindActivity<*, *, *>).viewModel
-        viewBinding.setVariable(viewModelVariableId, viewModel)
+        viewBinding.setVariable(BR.viewModel, viewModel)
         registerViewActionObserver(viewModel.viewAction)
         onViewLoad(savedInstanceState)
         return viewBinding.root
     }
+
+    abstract fun provideViewModelFactory(): ViewModelProvider.Factory
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
