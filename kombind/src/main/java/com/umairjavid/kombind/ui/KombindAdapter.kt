@@ -7,11 +7,10 @@ import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.umairjavid.kombind.BR
 
 abstract class KombindAdapter<T: Any, V: KombindAdapter.BaseViewHolder>(private val items: ObservableArrayList<T>) : RecyclerView.Adapter<V>() {
     open val handler: Any? = null
-    protected abstract val itemVariableId: Int
-    protected abstract val handlerVariableId: Int
     protected abstract fun getLayout(position: Int): Int
 
     init {
@@ -29,7 +28,7 @@ abstract class KombindAdapter<T: Any, V: KombindAdapter.BaseViewHolder>(private 
 
     @Suppress("UNCHECKED_CAST")
     open fun createViewHolder(viewDataBinding: ViewDataBinding): V {
-        return BaseViewHolder(viewDataBinding, itemVariableId, handlerVariableId) as V
+        return BaseViewHolder(viewDataBinding) as V
     }
 
     override fun onBindViewHolder(holder: V?, position: Int) {
@@ -38,10 +37,10 @@ abstract class KombindAdapter<T: Any, V: KombindAdapter.BaseViewHolder>(private 
 
     override fun getItemCount() = items.size
 
-    open class BaseViewHolder(val binding: ViewDataBinding, val itemVariableId: Int, val handlerVariableId: Int) : RecyclerView.ViewHolder(binding.root) {
+    open class BaseViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         open fun bind(item: Any, handler: Any?) {
-            binding.setVariable(itemVariableId, item)
-            if (handler != null) binding.setVariable(handlerVariableId, handler)
+            binding.setVariable(BR.viewModel, item)
+            if (handler != null) binding.setVariable(BR.handler, handler)
             binding.executePendingBindings()
         }
     }

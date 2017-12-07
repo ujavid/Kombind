@@ -6,13 +6,13 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.umairjavid.kombind.BR
 import com.umairjavid.kombind.ext.registerViewActionObserver
 
 abstract class KombindActivity<VM: KombindViewModel, VMF: ViewModelProvider.Factory, VDB: ViewDataBinding> : AppCompatActivity() {
     protected abstract val viewModelClass: Class<VM>
     protected abstract val layoutResId: Int
-    protected abstract val viewModelVariableId: Int
-    protected lateinit var viewModelFactory: VMF
+    protected abstract val viewModelFactory: VMF
     protected lateinit var viewBinding: VDB
     lateinit var viewModel: VM
 
@@ -22,7 +22,7 @@ abstract class KombindActivity<VM: KombindViewModel, VMF: ViewModelProvider.Fact
         onBeforeViewLoad(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(viewModelClass)
         viewBinding = DataBindingUtil.setContentView(this, layoutResId)
-        viewBinding.setVariable(viewModelVariableId, viewModel)
+        viewBinding.setVariable(BR.viewModel, viewModel)
         registerViewActionObserver(viewModel.viewAction)
         onViewLoad(savedInstanceState)
     }
