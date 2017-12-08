@@ -3,21 +3,40 @@ package com.umairjavid.kombindsample.ui.main
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
+import android.widget.SimpleAdapter
 import com.umairjavid.kombind.ui.KombindViewModel
-import com.umairjavid.kombindsample.repo.ItemRepository
+import com.umairjavid.kombindsample.model.SimpleItem
+import com.umairjavid.kombindsample.repo.SimpleItemRepository
 
-class MainViewModel(application: Application, private val itemRepository: ItemRepository) : KombindViewModel(application) {
-    val text = ObservableField<String>("Hello Kombind!")
+class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application), SimpleItemAdapter.ActionHandler {
+    val items = ObservableArrayList<SimpleItem>()
+
+    init {
+        loadItems()
+    }
+
+    private fun loadItems() = items.addAll(simpleItemRepository.getSimpleItems())
+
+    fun onFABClick() = items.add(simpleItemRepository.addItem(items.size + 1))
+
+    override fun onSimpleItemClick(simpleItem: SimpleItem) {
+        //TODO open edit dialog
+    }
+
+    override fun onDeleteClick(simpleItemId: Int) {
+        items.remove(items.find { it.id == simpleItemId })
+    }
 
     class Factory(
             private val application: Application,
-            private val itemRepository: ItemRepository
+            private val simpleItemRepository: SimpleItemRepository
     ) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>) = MainViewModel(
                 application,
-                itemRepository
+                simpleItemRepository
         ) as T
     }
 }

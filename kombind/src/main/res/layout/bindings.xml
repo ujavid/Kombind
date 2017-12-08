@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable name="viewModel" type="com.umairjavid.kombind.ui.KombindViewModel"/>
+        <variable name="item" type="com.umairjavid.kombind.ui.KombindViewModel"/>
         <variable name="handler" type="com.umairjavid.kombind.ui.KombindViewModel"/>
     </data>
     <FrameLayout
