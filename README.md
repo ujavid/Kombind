@@ -1,7 +1,7 @@
 # Kombind
 **Ko**tlin with **M**VVM and Data**bind**ing
 
-The purpose of this library is to provide simple base classes which combine the Android ViewModel class with Databinding combined together in Kotlin! The sample app shows some of these classes in action.
+The purpose of this library is to provide simple base classes which combine the Android ViewModel Architecture Component with Databinding all in Kotlin! The sample app shows some of these classes in action.
 
 # Download
 Add it in your root `build.gradle` at the end of repositories:
