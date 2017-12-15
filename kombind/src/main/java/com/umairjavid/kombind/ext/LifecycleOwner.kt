@@ -16,7 +16,7 @@ fun LifecycleOwner.registerViewActionObserver(viewActionQueue: MutableLiveData<Q
         while(it?.isNotEmpty() == true) {
             val viewAction = it.remove()
             when (viewAction) {
-               is ViewAction.StartActivity -> when {
+                is ViewAction.StartActivity -> when {
                     this is Activity -> startActivity(viewAction.intent)
                     this is Fragment -> startActivity(viewAction.intent)
                     this is android.support.v4.app.Fragment -> startActivity(viewAction.intent)
