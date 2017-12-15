@@ -22,30 +22,30 @@ abstract class KombindViewModel(application: Application) : AndroidViewModel(app
     }
 
     protected fun startActivity(intent: Intent) {
-        addViewAction(ViewAction(action = ViewAction.Action.START_ACTIVITY, intent = intent))
+        addViewAction(ViewAction.StartActivity(intent))
     }
 
     protected fun startActivityForResult(intent: Intent, requestCode: Int) {
-        addViewAction(ViewAction(action = ViewAction.Action.START_ACTIVITY_FOR_RESULT, intent = intent, requestCode = requestCode))
+        addViewAction(ViewAction.StartActivityForResult(intent, requestCode))
     }
 
     protected fun showDialog(builder: DialogFragmentBuilder<*>) {
-        addViewAction(ViewAction(action = ViewAction.Action.SHOW_DIALOG, builder = builder))
+        addViewAction(ViewAction.ShowDialog(builder))
     }
 
     protected fun showDialog(builder: com.umairjavid.kombind.ui.v4.DialogFragmentBuilder<*>) {
-        addViewAction(ViewAction(action = ViewAction.Action.SHOW_DIALOG, v4builder = builder))
+        addViewAction(ViewAction.ShowV4Dialog(builder))
     }
 
     protected fun dismissDialog() {
-        addViewAction(ViewAction(action = ViewAction.Action.DISMISS_DIALOG))
+        addViewAction(ViewAction.DismissDialog())
     }
 
     protected fun dismissDialog(tag: String) {
-        addViewAction(ViewAction(action = ViewAction.Action.DISMISS_DIALOG_WITH_TAG, tag = tag))
+        addViewAction(ViewAction.DismissDialog(tag))
     }
 
     protected fun finish() {
-        addViewAction(ViewAction(ViewAction.Action.FINISH))
+        addViewAction(ViewAction.Finish())
     }
 }
