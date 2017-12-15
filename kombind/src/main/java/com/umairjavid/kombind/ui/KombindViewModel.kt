@@ -20,7 +20,7 @@ abstract class KombindViewModel(application: Application) : AndroidViewModel(app
         viewActionQueue.offer(action)
         viewAction.value = viewActionQueue
     }
-    
+
     protected fun startActivity(intent: Intent) {
         addViewAction(ViewAction.StartActivity(intent))
     }
