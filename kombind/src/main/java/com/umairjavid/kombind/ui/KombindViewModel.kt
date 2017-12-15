@@ -46,6 +46,6 @@ abstract class KombindViewModel(application: Application) : AndroidViewModel(app
     }
 
     protected fun finish() {
-        addViewAction(ViewAction.Finish())
+        addViewAction(ViewAction.Finish)
     }
 }
