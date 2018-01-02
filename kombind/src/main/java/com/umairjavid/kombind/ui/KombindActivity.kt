@@ -12,7 +12,10 @@ import com.umairjavid.kombind.ext.registerViewActionObserver
 abstract class KombindActivity<VM: KombindViewModel> : AppCompatActivity() {
     protected abstract val viewModelClass: Class<VM>
     protected abstract val layoutResId: Int
-    protected lateinit var viewBinding: ViewDataBinding
+    protected  val viewBinding: ViewDataBinding by lazy {
+        DataBindingUtil.setContentView<ViewDataBinding>(this, layoutResId)
+    }
+
     lateinit var viewModel: VM
 
     @Suppress("UNCHECKED_CAST")
@@ -20,7 +23,6 @@ abstract class KombindActivity<VM: KombindViewModel> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         onBeforeViewLoad(savedInstanceState)
         viewModel = ViewModelProviders.of(this, provideViewModelFactory()).get(viewModelClass)
-        viewBinding = DataBindingUtil.setContentView(this, layoutResId)
         viewBinding.setVariable(BR.viewModel, viewModel)
         registerViewActionObserver(viewModel.viewAction)
         onViewLoad(savedInstanceState)
