@@ -16,7 +16,7 @@ project.ext {
 
     support_library_version = '27.0.2'
     android_plugin_version = '3.0.1'
-    lifecycle_version = '1.0.0'
+    lifecycle_version = '1.1.0'
     junit_version = '4.12'
     test_runner_version = '1.0.1'
     espresso_version = '3.0.1'
@@ -42,13 +42,11 @@ dependencies {
     //Android Dependencies
     api fileTree(dir: 'libs', include: ['*.jar'])
     api "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    api "com.android.support:support-v4:$support_library_version"
     api "com.android.support:appcompat-v7:$support_library_version"
     api "com.android.support:design:$support_library_version"
 
     //Lifecycle dependency
     api "android.arch.lifecycle:extensions:$lifecycle_version"
-    kapt "android.arch.lifecycle:compiler:$lifecycle_version"
 
     //DataBinding
     kapt "com.android.databinding:compiler:$android_plugin_version"
