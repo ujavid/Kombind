@@ -46,7 +46,8 @@ dependencies {
     api "com.android.support:design:$support_library_version"
 
     //Lifecycle dependency
-    api "android.arch.lifecycle:extensions:$lifecycle_version"
+    api "android.arch.lifecycle:livedata:$lifecycle_version"
+    api "android.arch.lifecycle:viewmodel:$lifecycle_version"
 
     //DataBinding
     kapt "com.android.databinding:compiler:$android_plugin_version"

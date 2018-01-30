@@ -2,7 +2,6 @@ package com.umairjavid.kombind.ui.v4
 
 import android.app.Dialog
 import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -26,7 +25,7 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setStyle(STYLE_NO_FRAME, 0)
         onBeforeViewLoad(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, provideViewModelFactory()).get(viewModelClass)
+        viewModel = provideViewModelFactory().create(viewModelClass)
         viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
         viewBinding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         viewBinding.setVariable(BR.viewModel, viewModel)
