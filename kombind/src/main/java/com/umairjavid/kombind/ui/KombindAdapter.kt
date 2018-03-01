@@ -23,16 +23,16 @@ abstract class KombindAdapter<T: Any, V: KombindAdapter.ViewHolder>(private val 
         })
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, position: Int): V =
-            createViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent?.context), getLayout(position), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): V =
+            createViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), getLayout(position), parent, false))
 
     @Suppress("UNCHECKED_CAST")
     open fun createViewHolder(viewDataBinding: ViewDataBinding): V {
         return ViewHolder(viewDataBinding) as V
     }
 
-    override fun onBindViewHolder(holder: V?, position: Int) {
-        holder?.bind(items[position], handler)
+    override fun onBindViewHolder(holder: V, position: Int) {
+        holder.bind(items[position], handler)
     }
 
     override fun getItemCount() = items.size

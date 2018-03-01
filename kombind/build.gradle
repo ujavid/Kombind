@@ -7,14 +7,14 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.ujavid'
 
 project.ext {
-    compileSdkVersion = 26
-    buildToolsVersion = '26.0.2'
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.3'
     minSdkVersion = 14
     targetSdkVersion = 26
     versionCode = 1
     versionName = '1.0'
 
-    support_library_version = '27.0.2'
+    support_library_version = '27.1.0'
     android_plugin_version = '3.0.1'
     lifecycle_version = '1.1.0'
     junit_version = '4.12'

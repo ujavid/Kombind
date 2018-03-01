@@ -4,14 +4,14 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 project.ext {
-    compileSdkVersion = 26
-    buildToolsVersion = '26.0.2'
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.3'
     minSdkVersion = 14
     targetSdkVersion = 26
     versionCode = 1
     versionName = '1.0'
 
-    support_library_version = '27.0.2'
+    support_library_version = '27.1.0'
     android_plugin_version = '3.0.1'
     junit_version = '4.12'
     test_runner_version = '1.0.1'
