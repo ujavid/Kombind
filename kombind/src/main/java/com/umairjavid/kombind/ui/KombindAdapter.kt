@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.umairjavid.kombind.BR
 
 abstract class KombindAdapter<T: Any, V: KombindAdapter.ViewHolder>(private val items: ObservableArrayList<T>) : RecyclerView.Adapter<V>() {
+    private lateinit var layoutInflater: LayoutInflater
     open val handler: Any? = null
     protected abstract fun getLayout(position: Int): Int
 
@@ -23,19 +24,21 @@ abstract class KombindAdapter<T: Any, V: KombindAdapter.ViewHolder>(private val 
         })
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int): V =
-            createViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), getLayout(position), parent, false))
+    override fun getItemCount() = items.size
+
+    override fun getItemViewType(position: Int) = getLayout(position)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): V {
+        if (!::layoutInflater.isInitialized) layoutInflater = LayoutInflater.from(parent.context)
+        return createViewHolder(DataBindingUtil.inflate(layoutInflater, viewType, parent, false))
+    }
 
     @Suppress("UNCHECKED_CAST")
-    open fun createViewHolder(viewDataBinding: ViewDataBinding): V {
-        return ViewHolder(viewDataBinding) as V
-    }
+    open fun createViewHolder(viewDataBinding: ViewDataBinding) = ViewHolder(viewDataBinding) as V
 
     override fun onBindViewHolder(holder: V, position: Int) {
         holder.bind(items[position], handler)
     }
-
-    override fun getItemCount() = items.size
 
     open class ViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         open fun bind(item: Any, handler: Any?) {

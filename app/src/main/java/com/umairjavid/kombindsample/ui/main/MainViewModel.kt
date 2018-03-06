@@ -4,14 +4,12 @@ import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.ObservableArrayList
-import android.databinding.ObservableField
-import android.widget.SimpleAdapter
 import com.umairjavid.kombind.ui.KombindViewModel
 import com.umairjavid.kombindsample.model.SimpleItem
 import com.umairjavid.kombindsample.repo.SimpleItemRepository
 
 class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application), SimpleItemAdapter.ActionHandler {
-    val items = ObservableArrayList<SimpleItem>()
+    val items = ObservableArrayList<Any>()
 
     init {
         loadItems()
@@ -26,7 +24,7 @@ class MainViewModel(application: Application, private val simpleItemRepository: 
     }
 
     override fun onDeleteClick(simpleItemId: Int) {
-        items.remove(items.find { it.id == simpleItemId })
+        items.remove(items.find { it is SimpleItem && it.id == simpleItemId })
     }
 
     class Factory(
