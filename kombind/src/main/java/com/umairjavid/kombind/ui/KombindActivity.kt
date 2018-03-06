@@ -1,6 +1,7 @@
 package com.umairjavid.kombind.ui
 
 import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -18,7 +19,7 @@ abstract class KombindActivity<VM: KombindViewModel> : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onBeforeViewLoad(savedInstanceState)
-        viewModel = provideViewModelFactory().create(viewModelClass)
+        viewModel = ViewModelProviders.of(this, provideViewModelFactory()).get(viewModelClass)
         viewBinding = DataBindingUtil.setContentView(this, layoutResId)
         viewBinding.setVariable(BR.viewModel, viewModel)
         registerViewActionObserver(viewModel.viewAction)
