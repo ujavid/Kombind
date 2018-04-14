@@ -18,7 +18,7 @@ Add the dependency to your app module `build.gradle` file:
 
 ```
 dependencies {
-	compile 'com.github.ujavid:kombind:0.2.1'
+	compile 'com.github.ujavid:kombind:0.3.1'
 }
 ```
 
@@ -27,7 +27,7 @@ dependencies {
 Extend the `KombindViewModel` class and create a `Factory` class to provide dependencies. Take a look at the sample app to see an example.
 ```
 class MainViewModel(application: Application) : KombindViewModel(application) {
-    //Observable fields and business logic here
+    //MutableLiveData/Observable fields and business logic here
 
     class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>) = MainViewModel(application) as T
@@ -61,7 +61,7 @@ class MyAdapter(items: ObservableArrayList<MyItem>, override val handler: Any?) 
 
 # License
 ```
-Copyright 2017 Umair Javid
+Copyright 2018 Umair Javid
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
