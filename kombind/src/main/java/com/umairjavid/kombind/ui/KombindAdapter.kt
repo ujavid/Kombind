@@ -24,7 +24,7 @@ abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(private val items: M
                     is AdapterAction.NotifyItemRangeInserted -> notifyItemRangeInserted(action.positionStart, action.itemCount)
                     is AdapterAction.NotifyItemRangeRemoved -> notifyItemRangeRemoved(action.positionStart, action.itemCount)
                     is AdapterAction.NotifyItemRangeChanged -> notifyItemRangeChanged(action.positionStart, action.itemCount)
-                    is AdapterAction.NotifyDataSetChanged -> notifyDataSetChanged()
+                    AdapterAction.NotifyDataSetChanged -> notifyDataSetChanged()
                 }
             }
         })
