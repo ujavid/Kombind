@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.app.DialogFragment
 import android.app.Fragment
+import android.os.Build
 import android.support.v4.app.FragmentActivity
 import com.umairjavid.kombind.model.ViewAction
 
@@ -28,7 +29,7 @@ fun LifecycleOwner.registerViewActionObserver(viewActionQueue: MutableLiveData<Q
                 }
                 is ViewAction.ShowDialog -> when {
                     this is Activity -> viewAction.builder.show(fragmentManager)
-                    this is Fragment -> viewAction.builder.show(childFragmentManager)
+                    this is Fragment -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) viewAction.builder.show(childFragmentManager)
                 }
                 is ViewAction.ShowV4Dialog -> when {
                     this is FragmentActivity -> viewAction.builder.show(supportFragmentManager)
@@ -39,7 +40,7 @@ fun LifecycleOwner.registerViewActionObserver(viewActionQueue: MutableLiveData<Q
                     this is android.support.v4.app.DialogFragment -> dismiss()
                     this is Activity -> fragmentManager.dismiss(viewAction.tag)
                     this is FragmentActivity -> supportFragmentManager.dismiss(viewAction.tag)
-                    this is Fragment -> childFragmentManager.dismiss(viewAction.tag)
+                    this is Fragment -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) childFragmentManager.dismiss(viewAction.tag)
                     this is android.support.v4.app.Fragment -> childFragmentManager.dismiss(viewAction.tag)
                 }
                 ViewAction.Finish -> when {

@@ -3,13 +3,13 @@ package com.umairjavid.kombindsample.ui.main
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import android.databinding.ObservableArrayList
+import com.umairjavid.kombind.model.MutableLiveArrayList
 import com.umairjavid.kombind.ui.KombindViewModel
 import com.umairjavid.kombindsample.model.SimpleItem
 import com.umairjavid.kombindsample.repo.SimpleItemRepository
 
 class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application), SimpleItemAdapter.ActionHandler {
-    val items = ObservableArrayList<Any>()
+    val items = MutableLiveArrayList<Any>()
 
     init {
         loadItems()

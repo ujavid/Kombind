@@ -19,7 +19,10 @@ class MainActivity : KombindActivity<MainViewModel>() {
     }
 
     private fun setupSimpleItemList() {
+        val adapter = SimpleItemAdapter(viewModel.items, viewModel)
+        adapter.registerObserver(this)
+
         simple_item_list.layoutManager = LinearLayoutManager(this)
-        simple_item_list.adapter = SimpleItemAdapter(viewModel.items, viewModel)
+        simple_item_list.adapter = adapter
     }
 }
