@@ -3,28 +3,35 @@ package com.umairjavid.kombindsample.ui.main
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.umairjavid.kombind.model.MutableLiveArrayList
 import com.umairjavid.kombind.ui.KombindViewModel
 import com.umairjavid.kombindsample.model.SimpleItem
 import com.umairjavid.kombindsample.repo.SimpleItemRepository
 
 class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application), SimpleItemAdapter.ActionHandler {
-    val items = MutableLiveArrayList<Any>()
+    val state = MainState()
 
     init {
         loadItems()
     }
 
-    private fun loadItems() = items.addAll(simpleItemRepository.getSimpleItems())
+    private fun loadItems() = state { items.addAll(simpleItemRepository.getSimpleItems()) }
 
-    fun onFABClick() = items.add(simpleItemRepository.addItem(items.size + 1))
+    fun onFABClick() = state {
+        val item = simpleItemRepository.addItem(items.size + 1)
+        items.add(item)
+        title.value = "${item.name} Added!"
+    }
 
     override fun onSimpleItemClick(simpleItem: SimpleItem) {
-        //TODO open edit dialog
+        state { title.value = "${simpleItem.name} Clicked!" }
     }
 
     override fun onDeleteClick(simpleItemId: Int) {
-        items.remove(items.find { it is SimpleItem && it.id == simpleItemId })
+        state {
+            val item = items.find { it is SimpleItem && it.id == simpleItemId } as SimpleItem
+            items.remove(item)
+            title.value = "${item.name} Deleted!"
+        }
     }
 
     class Factory(

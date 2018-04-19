@@ -38,6 +38,7 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment(), L
         viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
         viewBinding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         viewBinding.setVariable(BR.viewModel, viewModel)
+        viewBinding.setLifecycleOwner(this)
         registerViewActionObserver(viewModel.viewAction)
         onViewLoad(savedInstanceState)
         return viewBinding.root
