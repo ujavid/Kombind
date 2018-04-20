@@ -40,8 +40,11 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment(), L
         viewBinding.setVariable(BR.viewModel, viewModel)
         viewBinding.setLifecycleOwner(this)
         registerViewActionObserver(viewModel.viewAction)
-        onViewLoad(savedInstanceState)
         return viewBinding.root
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        onViewLoad(savedInstanceState)
     }
 
     abstract fun provideViewModelFactory(): ViewModelProvider.Factory
