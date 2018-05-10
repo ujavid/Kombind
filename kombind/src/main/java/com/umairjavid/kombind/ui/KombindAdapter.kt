@@ -34,6 +34,8 @@ abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(private val items: M
 
     override fun getItemViewType(position: Int) = getLayout(position)
 
+    protected fun getItem(position: Int): Any? = items[position]
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): V {
         if (!::layoutInflater.isInitialized) layoutInflater = LayoutInflater.from(parent.context)
         return createViewHolder(DataBindingUtil.inflate(layoutInflater, viewType, parent, false))
