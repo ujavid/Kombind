@@ -11,7 +11,7 @@ import com.umairjavid.kombind.BR
 import com.umairjavid.kombind.model.AdapterAction
 import com.umairjavid.kombind.model.MutableLiveArrayList
 
-abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(private val items: MutableLiveArrayList<*>) : RecyclerView.Adapter<V>() {
+abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(protected val items: MutableLiveArrayList<*>) : RecyclerView.Adapter<V>() {
     private lateinit var layoutInflater: LayoutInflater
     open val handler: Any? = null
     protected abstract fun getLayout(position: Int): Int
@@ -33,8 +33,6 @@ abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(private val items: M
     override fun getItemCount() = items.size
 
     override fun getItemViewType(position: Int) = getLayout(position)
-
-    protected fun getItem(position: Int): Any? = items[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): V {
         if (!::layoutInflater.isInitialized) layoutInflater = LayoutInflater.from(parent.context)
