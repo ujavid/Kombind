@@ -18,7 +18,7 @@ Add the dependency to your app module `build.gradle` file:
 
 ```
 dependencies {
-	compile 'com.github.ujavid:kombind:0.4.5'
+	compile 'com.github.ujavid:kombind:0.5.0'
 }
 ```
 
@@ -50,23 +50,30 @@ class MainActivity : KombindActivity<MainViewModel>() {
 ## KombindAdapter
 Extend the `KombindAdapter` with parameters for your list of items and an optional handler to handle events. Then override the `getLayout` abstract method.
 ```
-class MyAdapter(items: MutableLiveArrayList<MyItem>, override val handler: Any?) : KombindAdapter<KombindAdapter.ViewHolder>(items) {
+class MyAdapter(items: MutableLiveArrayList<MyItem>, private val handler: Any?) : KombindAdapter<KombindAdapter.ViewHolder>(items) {
     override fun getLayout(position: Int) = R.layout.item_myitem
+    override fun getHandler(position: Int) = handler
 
     interface ActionHandler {
         fun onMyItemClick(myItem: MyItem)
     }
 }
 ```
-If you want the Adapter to automatically update the list via the `notify` methods when you update your `items` list, simply call the `registerObserver` method on the Adapter.
+If you want the Adapter to automatically update the list via the `notify` methods when you update your `items` list, simply call the `registerObserver` method when creating the Adapter.
 ```
 class MainActivity : KombindActivity<MainViewModel>() {
     ...
 
-    private fun setupAdapter() {
-        val adapter = MyAdapter(items, handler)
-        adapter.registerObserver(this)
-        recyclerview.adapter = adapter    
+    override fun onViewLoad(savedInstanceState: Bundle?) {
+        setupList()
+    }
+
+    private fun setupList() {
+    	recyclerview.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = MyAdapter(items, viewModel)
+		.registerObserver(this@MainActivity)
+        }
     }
 
     ...
