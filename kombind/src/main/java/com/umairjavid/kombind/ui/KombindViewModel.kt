@@ -33,10 +33,6 @@ abstract class KombindViewModel(application: Application) : AndroidViewModel(app
         addViewAction(ViewAction.ShowDialog(builder))
     }
 
-    protected fun showDialog(builder: com.umairjavid.kombind.ui.v4.DialogFragmentBuilder<*>) {
-        addViewAction(ViewAction.ShowV4Dialog(builder))
-    }
-
     protected fun dismissDialog() {
         addViewAction(ViewAction.DismissDialog())
     }

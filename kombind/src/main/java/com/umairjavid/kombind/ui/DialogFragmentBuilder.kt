@@ -1,8 +1,8 @@
 package com.umairjavid.kombind.ui
 
 import android.os.Bundle
-import android.app.DialogFragment
-import android.app.FragmentManager
+import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentManager
 
 open class DialogFragmentBuilder<out T: DialogFragment>(private val clazz: Class<T>, protected val arguments: Bundle, protected val fragmentTag: String) {
     fun build(): T {

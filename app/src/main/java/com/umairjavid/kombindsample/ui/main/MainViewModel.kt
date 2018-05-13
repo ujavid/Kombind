@@ -4,10 +4,13 @@ import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.umairjavid.kombind.ui.KombindViewModel
+import com.umairjavid.kombindsample.model.SimpleHeader
 import com.umairjavid.kombindsample.model.SimpleItem
 import com.umairjavid.kombindsample.repo.SimpleItemRepository
 
-class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application), SimpleItemAdapter.ActionHandler {
+class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application),
+        SimpleItemAdapter.HeaderActionHandler,
+        SimpleItemAdapter.ItemActionHandler {
     val state = MainState()
 
     init {
@@ -20,6 +23,10 @@ class MainViewModel(application: Application, private val simpleItemRepository: 
         val item = simpleItemRepository.addItem(items.size + 1)
         items.add(item)
         title.value = "${item.name} Added!"
+    }
+
+    override fun onHeaderItemClick(headerItem: SimpleHeader) {
+        state { title.value = "${headerItem.title} Clicked!" }
     }
 
     override fun onSimpleItemClick(simpleItem: SimpleItem) {

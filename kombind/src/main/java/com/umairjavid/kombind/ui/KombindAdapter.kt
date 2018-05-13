@@ -11,12 +11,12 @@ import com.umairjavid.kombind.BR
 import com.umairjavid.kombind.model.AdapterAction
 import com.umairjavid.kombind.model.MutableLiveArrayList
 
-abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(protected val items: MutableLiveArrayList<*>) : RecyclerView.Adapter<V>() {
+abstract class KombindAdapter<VH: KombindAdapter.ViewHolder>(protected val items: MutableLiveArrayList<*>) : RecyclerView.Adapter<VH>() {
     private lateinit var layoutInflater: LayoutInflater
-    open val handler: Any? = null
     protected abstract fun getLayout(position: Int): Int
+    open fun getHandler(position: Int): Any? = null
 
-    fun registerObserver(lifecycleOwner: LifecycleOwner) {
+    fun registerObserver(lifecycleOwner: LifecycleOwner): KombindAdapter<VH> {
         items.observe(lifecycleOwner, Observer {
             while(it?.isNotEmpty() == true) {
                 val action = it.remove()
@@ -28,22 +28,23 @@ abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(protected val items:
                 }
             }
         })
+        return this
     }
 
     override fun getItemCount() = items.size
 
     override fun getItemViewType(position: Int) = getLayout(position)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): V {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         if (!::layoutInflater.isInitialized) layoutInflater = LayoutInflater.from(parent.context)
         return createViewHolder(DataBindingUtil.inflate(layoutInflater, viewType, parent, false))
     }
 
     @Suppress("UNCHECKED_CAST")
-    open fun createViewHolder(viewDataBinding: ViewDataBinding) = ViewHolder(viewDataBinding) as V
+    open fun createViewHolder(viewDataBinding: ViewDataBinding) = ViewHolder(viewDataBinding) as VH
 
-    override fun onBindViewHolder(holder: V, position: Int) {
-        holder.bind(items[position], handler)
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        holder.bind(items[position], getHandler(position))
     }
 
     open class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
