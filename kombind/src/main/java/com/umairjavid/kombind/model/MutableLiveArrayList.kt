@@ -1,10 +1,10 @@
 package com.umairjavid.kombind.model
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableList
 import com.umairjavid.kombind.model.AdapterAction.*
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue

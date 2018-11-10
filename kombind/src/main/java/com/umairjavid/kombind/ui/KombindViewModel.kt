@@ -1,8 +1,8 @@
 package com.umairjavid.kombind.ui
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import android.content.Intent
 import android.content.res.Resources
 import com.umairjavid.kombind.model.ViewAction
