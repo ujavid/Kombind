@@ -4,22 +4,24 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 project.ext {
-    compileSdkVersion = 27
-    buildToolsVersion = '27.0.3'
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.3'
     minSdkVersion = 14
     targetSdkVersion = 26
     versionCode = 1
     versionName = '1.0'
 
-    support_library_version = '27.1.1'
+    androidx_legacy_support_library_version = '1.0.0'
+    androidx_cardview = '1.0.0'
+    androidx_appcompat = '1.0.2'
     junit_version = '4.12'
-    test_runner_version = '1.0.1'
-    espresso_version = '3.0.1'
+    test_runner_version = '1.1.0'
+    espresso_version = '3.1.0'
 }
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion project.ext.compileSdkVersion
+    buildToolsVersion project.ext.buildToolsVersion
     defaultConfig {
         minSdkVersion project.ext.minSdkVersion
         targetSdkVersion project.ext.targetSdkVersion
@@ -43,10 +45,10 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':kombind')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation "androidx.legacy:legacy-support-v4:$androidx_legacy_support_library_version"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat"
+    implementation "androidx.cardview:cardview:$androidx_cardview"
     testImplementation "junit:junit:$junit_version"
-    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }
