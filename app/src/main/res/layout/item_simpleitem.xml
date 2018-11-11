@@ -23,37 +23,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_large"
-                android:textStyle="bold"
-                android:text="@string/name"
                 android:layout_marginStart="@dimen/spacing_large"
                 android:layout_marginEnd="0dp"
                 android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="0dp" />
+                android:layout_marginRight="0dp"
+                android:textStyle="bold"
+                android:text="@string/name" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{item.name}"
-                tools:text="Name"
                 android:layout_marginStart="@dimen/spacing_large"
                 android:layout_marginEnd="0dp"
                 android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="0dp" />
+                android:layout_marginRight="0dp"
+                android:text="@{item.name}"
+                tools:text="Name" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="@dimen/spacing_normal"
                 android:padding="@dimen/spacing_normal"
                 android:background="?attr/selectableItemBackground"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
                 android:text="@string/delete"
-                android:onClick="@{(view) -> handler.onDeleteClick(item.id)}"
-                android:layout_marginStart="0dp"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="@dimen/spacing_normal" />
+                android:onClick="@{(view) -> handler.onDeleteClick(item.id)}" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>
