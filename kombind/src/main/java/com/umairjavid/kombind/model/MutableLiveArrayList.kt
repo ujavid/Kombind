@@ -33,4 +33,12 @@ open class MutableLiveArrayList<T: Any>(default: Collection<T>? = null) : Observ
     fun observe(lifecycleOwner: LifecycleOwner, observer: Observer<Queue<AdapterAction>>) {
         adapterAction.observe(lifecycleOwner, observer)
     }
+
+    fun removeObservers(lifecycleOwner: LifecycleOwner) {
+        adapterAction.removeObservers(lifecycleOwner)
+    }
+
+    fun removeObserver(observer: Observer<Queue<AdapterAction>>) {
+        adapterAction.removeObserver(observer)
+    }
 }
