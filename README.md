@@ -50,7 +50,10 @@ class MainActivity : KombindActivity<MainViewModel>() {
 ## KombindAdapter
 Extend the `KombindAdapter` with parameters for your list of items and an optional handler to handle events. Then override the `getLayout` abstract method.
 ```kotlin
-class MyAdapter(items: MutableLiveArrayList<MyItem>, private val handler: Any?) : KombindAdapter<KombindAdapter.ViewHolder>(items) {
+class MyAdapter(
+    items: MutableLiveArrayList<MyItem>,
+    private val handler: Any?
+) : KombindAdapter<KombindAdapter.ViewHolder>(items) {
     override fun getLayout(position: Int) = R.layout.item_myitem
     override fun getHandler(position: Int) = handler
 
