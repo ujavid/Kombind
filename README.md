@@ -69,10 +69,9 @@ class MainActivity : KombindActivity<MainViewModel>() {
     }
 
     private fun setupList() {
-    	recyclerview.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MyAdapter(items, viewModel)
-		.registerObserver(this@MainActivity)
+    	recyclerview.also {
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = MyAdapter(items, viewModel).registerObserver(this)
         }
     }
 
