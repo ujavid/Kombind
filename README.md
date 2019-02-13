@@ -18,7 +18,7 @@ Add the dependency to your app module `build.gradle` file:
 
 ```gradle
 dependencies {
-	compile 'com.github.ujavid:kombind:0.5.0'
+	compile 'com.github.ujavid:kombind:0.5.1'
 }
 ```
 
