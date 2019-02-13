@@ -6,7 +6,7 @@ The purpose of this library is to provide simple base classes which combine the 
 # Download
 Add it in your root `build.gradle` at the end of repositories:
 
-```
+```gradle
 allprojects {
 	repositories {
 		...
@@ -16,7 +16,7 @@ allprojects {
 ```
 Add the dependency to your app module `build.gradle` file:
 
-```
+```gradle
 dependencies {
 	compile 'com.github.ujavid:kombind:0.5.0'
 }
@@ -25,7 +25,7 @@ dependencies {
 # Usage
 ## KombindViewModel
 Extend the `KombindViewModel` class and create a `Factory` class to provide dependencies. Take a look at the sample app to see an example.
-```
+```kotlin
 class MainViewModel(application: Application) : KombindViewModel(application) {
     //MutableLiveData/Observable fields and business logic here
 
@@ -37,7 +37,7 @@ class MainViewModel(application: Application) : KombindViewModel(application) {
 
 ## KombindActivity
 Extend the `KombindActivity` and specify the ViewModel from above. Then override the abstract variables and methods.
-```
+```kotlin
 class MainActivity : KombindActivity<MainViewModel>() {
     override val viewModelClass = MainViewModel::class.java
     override val layoutResId = R.layout.activity_main
@@ -49,7 +49,7 @@ class MainActivity : KombindActivity<MainViewModel>() {
 
 ## KombindAdapter
 Extend the `KombindAdapter` with parameters for your list of items and an optional handler to handle events. Then override the `getLayout` abstract method.
-```
+```kotlin
 class MyAdapter(items: MutableLiveArrayList<MyItem>, private val handler: Any?) : KombindAdapter<KombindAdapter.ViewHolder>(items) {
     override fun getLayout(position: Int) = R.layout.item_myitem
     override fun getHandler(position: Int) = handler
@@ -60,7 +60,7 @@ class MyAdapter(items: MutableLiveArrayList<MyItem>, private val handler: Any?) 
 }
 ```
 If you want the Adapter to automatically update the list via the `notify` methods when you update your `items` list, simply call the `registerObserver` method when creating the Adapter.
-```
+```kotlin
 class MainActivity : KombindActivity<MainViewModel>() {
     ...
 
