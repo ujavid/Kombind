@@ -8,17 +8,17 @@ Add it in your root `build.gradle` at the end of repositories:
 
 ```gradle
 allprojects {
-	repositories {
-		...
-		maven { url "https://jitpack.io" }
-	}
+    repositories {
+        ...
+        maven { url "https://jitpack.io" }
+    }
 }
 ```
 Add the dependency to your app module `build.gradle` file:
 
 ```gradle
 dependencies {
-	compile 'com.github.ujavid:kombind:0.5.1'
+    compile 'com.github.ujavid:kombind:0.5.1'
 }
 ```
 
