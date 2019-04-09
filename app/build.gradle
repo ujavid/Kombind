@@ -36,6 +36,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    kapt {
+        generateStubs = true
+    }
     dataBinding {
         enabled = true
     }
@@ -44,6 +47,9 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':kombind')
+    compileOnly project(':anontation')
+    kapt project(':processor')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "androidx.legacy:legacy-support-v4:$androidx_legacy_support_library_version"
     implementation "androidx.appcompat:appcompat:$androidx_appcompat"

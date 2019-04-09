@@ -3,16 +3,20 @@ package com.umairjavid.kombindsample.ui.main
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.umairjavid.kombind.anontation.SimpleKombindAdapter
+import com.umairjavid.kombind.model.MutableLiveArrayList
 import com.umairjavid.kombind.ui.KombindViewModel
+import com.umairjavid.kombindsample.R
 import com.umairjavid.kombindsample.model.SimpleHeader
 import com.umairjavid.kombindsample.model.SimpleItem
 import com.umairjavid.kombindsample.repo.SimpleItemRepository
+import kotlinx.android.synthetic.main.activity_main.view.simple_item_list
 
 class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application),
         SimpleItemAdapter.HeaderActionHandler,
         SimpleItemAdapter.ItemActionHandler {
-    val state = MainState()
-
+   val state = MainState()
+   @SimpleKombindAdapter(R.id.simple_item_list) val data: MutableLiveArrayList<String> = MutableLiveArrayList(mutableListOf())
     init {
         loadItems()
     }
