@@ -10,7 +10,6 @@ import com.umairjavid.kombindsample.R
 import com.umairjavid.kombindsample.model.SimpleHeader
 import com.umairjavid.kombindsample.model.SimpleItem
 import com.umairjavid.kombindsample.repo.SimpleItemRepository
-import kotlinx.android.synthetic.main.activity_main.view.simple_item_list
 
 class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application),
         SimpleItemAdapter.HeaderActionHandler,

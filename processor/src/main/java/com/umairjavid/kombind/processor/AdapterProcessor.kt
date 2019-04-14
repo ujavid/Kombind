@@ -2,28 +2,24 @@ package com.umairjavid.kombind.processor
 
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.asTypeName
 import com.umairjavid.kombind.anontation.SimpleKombindAdapter
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-
 import java.io.File
 import javax.annotation.processing.AbstractProcessor
-import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
-import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
-import javax.lang.model.util.ElementFilter
+
 
 @AutoService(Processor::class)
 class AdapterProcessor : AbstractProcessor() {
@@ -47,14 +43,25 @@ class AdapterProcessor : AbstractProcessor() {
         val kombindAdapterName = "KombindAdapter"
         val viewHolder = "KombindAdapter.ViewHolder"
         val fileName = element.simpleName
-        val className = "Gen_${fileName}_Adapter"
+        val className = "Kombind_${fileName}_Adapter"
 
         val file = FileSpec.builder(appPackageName, className)
                 .addType(TypeSpec.classBuilder(className)
                         .primaryConstructor(FunSpec.constructorBuilder()
-                                .addParameter("items", element.asType().asTypeName()).build()
+                                .addParameter("items", element.asType().asTypeName().checkForAnyType())
+                                .addParameter("handler", Any::class).build())
+                        .addProperty(PropertySpec.builder("handler", Any::class )
+                                .initializer("handler")
+                                .addModifiers(KModifier.PRIVATE)
+                                .build()
                         )
                         .addSuperclassConstructorParameter("items")
+                        .addFunction(FunSpec.builder("getHandler")
+                                .addModifiers(KModifier.OVERRIDE)
+                                .addParameter(ParameterSpec.builder("position", Int::class).build())
+                                .addStatement("return handler")
+                                .build()
+                        )
                         .addFunction(FunSpec.builder("getLayout")
                                 .addModifiers(KModifier.OVERRIDE)
                                 .addParameter(ParameterSpec.builder("position", Int::class).build())
@@ -62,15 +69,15 @@ class AdapterProcessor : AbstractProcessor() {
                                 .returns(Int::class)
                                 .build())
                         .superclass(ClassName(kombindPackage, kombindAdapterName).parameterizedBy(ClassName(kombindPackage, viewHolder))
-
-                        )
-                        .build())
+                        ).build())
                 .build()
         val kaptKotlnGenDir = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME]
         file.writeTo(File(kaptKotlnGenDir, "Gen$className"))
     }
 
-    companion object {
-        const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
-    }
+    fun TypeName.checkForAnyType() = if (this.toString().equals("com.umairjavid.kombind.model.MutableLiveArrayList<java.lang.Object>")) {
+            ClassName("com.umairjavid.kombind.model", "MutableLiveArrayList").parameterizedBy(ClassName("kotlin", "Any"))
+            } else this
+
+    companion object { const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated" }
 }
