@@ -19,7 +19,7 @@ import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
-
+import kotlin.reflect.KClass
 
 @AutoService(Processor::class)
 class AdapterProcessor : AbstractProcessor() {
@@ -50,30 +50,34 @@ class AdapterProcessor : AbstractProcessor() {
                         .primaryConstructor(FunSpec.constructorBuilder()
                                 .addParameter("items", element.asType().asTypeName().checkForAnyType())
                                 .addParameter("handler", Any::class).build())
-                        .addProperty(PropertySpec.builder("handler", Any::class )
-                                .initializer("handler")
-                                .addModifiers(KModifier.PRIVATE)
-                                .build()
-                        )
+                        .addProperty(generateConstructorProperty("handler", Any::class))
                         .addSuperclassConstructorParameter("items")
-                        .addFunction(FunSpec.builder("getHandler")
-                                .addModifiers(KModifier.OVERRIDE)
-                                .addParameter(ParameterSpec.builder("position", Int::class).build())
-                                .addStatement("return handler")
-                                .build()
-                        )
-                        .addFunction(FunSpec.builder("getLayout")
-                                .addModifiers(KModifier.OVERRIDE)
-                                .addParameter(ParameterSpec.builder("position", Int::class).build())
-                                .addStatement("return $layoutRes")
-                                .returns(Int::class)
-                                .build())
+                        .addFunction(generateGetHandlerMethod())
+                        .addFunction(generateGetLayoutMethod(layoutRes))
                         .superclass(ClassName(kombindPackage, kombindAdapterName).parameterizedBy(ClassName(kombindPackage, viewHolder))
                         ).build())
                 .build()
         val kaptKotlnGenDir = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME]
         file.writeTo(File(kaptKotlnGenDir, "Gen$className"))
     }
+
+    private fun generateConstructorProperty(propertyName: String,  propertyType: KClass<*>) = PropertySpec.builder(propertyName, propertyType)
+                .initializer(propertyName)
+                .addModifiers(KModifier.PRIVATE)
+                .build()
+
+    private fun generateGetHandlerMethod() = FunSpec.builder("getHandler")
+                .addModifiers(KModifier.OVERRIDE)
+                .addParameter(ParameterSpec.builder("position", Int::class).build())
+                .addStatement("return handler")
+                .build()
+
+    private fun generateGetLayoutMethod(layoutRes: Int) = FunSpec.builder("getLayout")
+                .addModifiers(KModifier.OVERRIDE)
+                .addParameter(ParameterSpec.builder("position", Int::class).build())
+                .addStatement("return $layoutRes")
+                .returns(Int::class)
+                .build()
 
     fun TypeName.checkForAnyType() = if (this.toString().equals("com.umairjavid.kombind.model.MutableLiveArrayList<java.lang.Object>")) {
         ClassName("com.umairjavid.kombind.model", "MutableLiveArrayList").parameterizedBy(ClassName("kotlin", "Any"))
