@@ -76,8 +76,8 @@ class AdapterProcessor : AbstractProcessor() {
     }
 
     fun TypeName.checkForAnyType() = if (this.toString().equals("com.umairjavid.kombind.model.MutableLiveArrayList<java.lang.Object>")) {
-            ClassName("com.umairjavid.kombind.model", "MutableLiveArrayList").parameterizedBy(ClassName("kotlin", "Any"))
-            } else this
+        ClassName("com.umairjavid.kombind.model", "MutableLiveArrayList").parameterizedBy(ClassName("kotlin", "Any"))
+    } else this
 
     companion object { const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated" }
 }
