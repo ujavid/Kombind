@@ -14,6 +14,8 @@ import com.squareup.kotlinpoet.asTypeName
 import com.umairjavid.kombind.anontation.SimpleKombindAdapter
 import java.io.File
 import javax.annotation.processing.AbstractProcessor
+import javax.annotation.processing.Messager
+import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
@@ -23,6 +25,12 @@ import kotlin.reflect.KClass
 
 @AutoService(Processor::class)
 class AdapterProcessor : AbstractProcessor() {
+    lateinit var messenge: Messager
+
+    override fun init(env: ProcessingEnvironment?) {
+        super.init(env)
+        messenge = env!!.messager
+    }
     override fun getSupportedAnnotationTypes() = mutableSetOf(SimpleKombindAdapter::class.java.name)
 
     override fun getSupportedSourceVersion() = SourceVersion.latestSupported()
@@ -47,13 +55,15 @@ class AdapterProcessor : AbstractProcessor() {
 
         val file = FileSpec.builder(appPackageName, className)
                 .addType(TypeSpec.classBuilder(className)
+                        .makeAbstractIfTrue(layoutRes == 0)
                         .primaryConstructor(FunSpec.constructorBuilder()
+
                                 .addParameter("items", element.asType().asTypeName().checkForAnyType())
                                 .addParameter("handler", Any::class).build())
                         .addProperty(generateConstructorProperty("handler", Any::class))
                         .addSuperclassConstructorParameter("items")
                         .addFunction(generateGetHandlerMethod())
-                        .addFunction(generateGetLayoutMethod(layoutRes))
+                        .addFunction(if (layoutRes == 0) generateAbstractGetLayoutMethod() else generateGetLayoutMethod(layoutRes))
                         .superclass(ClassName(kombindPackage, kombindAdapterName).parameterizedBy(ClassName(kombindPackage, viewHolder))
                         ).build())
                 .build()
@@ -62,26 +72,43 @@ class AdapterProcessor : AbstractProcessor() {
     }
 
     private fun generateConstructorProperty(propertyName: String,  propertyType: KClass<*>) = PropertySpec.builder(propertyName, propertyType)
-                .initializer(propertyName)
-                .addModifiers(KModifier.PRIVATE)
-                .build()
+            .initializer(propertyName)
+            .addModifiers(KModifier.PRIVATE)
+            .build()
 
     private fun generateGetHandlerMethod() = FunSpec.builder("getHandler")
-                .addModifiers(KModifier.OVERRIDE)
-                .addParameter(ParameterSpec.builder("position", Int::class).build())
-                .addStatement("return handler")
-                .build()
+            .addModifiers(KModifier.OVERRIDE)
+            .addParameter(ParameterSpec.builder("position", Int::class).build())
+            .addStatement("return handler")
+            .build()
 
-    private fun generateGetLayoutMethod(layoutRes: Int) = FunSpec.builder("getLayout")
+    private fun generateGetLayoutMethod(layoutRes: Int): FunSpec {
+       return FunSpec.builder("getLayout")
                 .addModifiers(KModifier.OVERRIDE)
                 .addParameter(ParameterSpec.builder("position", Int::class).build())
                 .addStatement("return $layoutRes")
                 .returns(Int::class)
                 .build()
+    }
 
-    fun TypeName.checkForAnyType() = if (this.toString().equals("com.umairjavid.kombind.model.MutableLiveArrayList<java.lang.Object>")) {
+    private fun generateAbstractGetLayoutMethod() =
+            FunSpec.builder("getLayout")
+            .addModifiers(KModifier.OVERRIDE, KModifier.ABSTRACT)
+            .addParameter(ParameterSpec.builder("position", Int::class).build())
+            .returns(Int::class)
+            .build()
+
+
+    private fun TypeName.checkForAnyType() = if (this.toString().equals("com.umairjavid.kombind.model.MutableLiveArrayList<java.lang.Object>")) {
         ClassName("com.umairjavid.kombind.model", "MutableLiveArrayList").parameterizedBy(ClassName("kotlin", "Any"))
     } else this
+
+    private fun TypeSpec.Builder.makeAbstractIfTrue(isAbstract: Boolean) = if (isAbstract) {
+
+        this.addModifiers(KModifier.ABSTRACT)
+    } else this
+
+    private fun TypeName.isKombindType() = this.toString().startsWith("com.umairjavid.kombind")
 
     companion object { const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated" }
 }
