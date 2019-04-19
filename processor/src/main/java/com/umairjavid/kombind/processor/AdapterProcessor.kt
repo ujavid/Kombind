@@ -21,6 +21,7 @@ import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
+import javax.tools.Diagnostic
 import kotlin.reflect.KClass
 
 @AutoService(Processor::class)
@@ -46,18 +47,21 @@ class AdapterProcessor : AbstractProcessor() {
     }
 
     fun generateAdapterClass(element: VariableElement, layoutRes: Int) {
+        if (!element.asType().asTypeName().isMutableLiveArraylist()) {
+            messenge.printMessage(Diagnostic.Kind.ERROR, "Needs to be of type MutableArrayList")
+            return
+        }
+
         val kombindPackage = "com.umairjavid.kombind.ui"
         val appPackageName = processingEnv.elementUtils.getPackageOf(element).simpleName.toString()
         val kombindAdapterName = "KombindAdapter"
         val viewHolder = "KombindAdapter.ViewHolder"
         val fileName = element.simpleName
         val className = "Kombind_${fileName}_Adapter"
-
         val file = FileSpec.builder(appPackageName, className)
                 .addType(TypeSpec.classBuilder(className)
                         .makeAbstractIfTrue(layoutRes == 0)
                         .primaryConstructor(FunSpec.constructorBuilder()
-
                                 .addParameter("items", element.asType().asTypeName().checkForAnyType())
                                 .addParameter("handler", Any::class).build())
                         .addProperty(generateConstructorProperty("handler", Any::class))
@@ -108,7 +112,7 @@ class AdapterProcessor : AbstractProcessor() {
         this.addModifiers(KModifier.ABSTRACT)
     } else this
 
-    private fun TypeName.isKombindType() = this.toString().startsWith("com.umairjavid.kombind")
+    private fun TypeName.isMutableLiveArraylist() = this.toString().startsWith("com.umairjavid.kombind.model.MutableLiveArrayList")
 
     companion object { const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated" }
 }
