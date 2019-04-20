@@ -26,11 +26,12 @@ import kotlin.reflect.KClass
 
 @AutoService(Processor::class)
 class AdapterProcessor : AbstractProcessor() {
-    lateinit var messenge: Messager
+    lateinit var messenger: Messager
+    val genaratedClassSet = mutableSetOf<String>()
 
     override fun init(env: ProcessingEnvironment?) {
         super.init(env)
-        messenge = env!!.messager
+        messenger = env!!.messager
     }
     override fun getSupportedAnnotationTypes() = mutableSetOf(SimpleKombindAdapter::class.java.name)
 
@@ -48,7 +49,7 @@ class AdapterProcessor : AbstractProcessor() {
 
     fun generateAdapterClass(element: VariableElement, layoutRes: Int) {
         if (!element.asType().asTypeName().isMutableLiveArraylist()) {
-            messenge.printMessage(Diagnostic.Kind.ERROR, "Needs to be of type MutableArrayList")
+            messenger.printMessage(Diagnostic.Kind.ERROR, "Needs to be of type MutableArrayList")
             return
         }
 
@@ -57,7 +58,15 @@ class AdapterProcessor : AbstractProcessor() {
         val kombindAdapterName = "KombindAdapter"
         val viewHolder = "KombindAdapter.ViewHolder"
         val elementName = element.simpleName
-        val className = "Kombind${elementName.toString().capitalize()}Adapter"
+        val enclosingClassName = element.enclosingElement.simpleName
+        val className = "Kombind${elementName.toString().capitalize()}Adapter_${enclosingClassName}"
+
+        if (genaratedClassSet.contains(className)) {
+            messenger.printMessage(Diagnostic.Kind.ERROR, "Properties with sig not allowed,consider combinding both types into one adapter")
+            return
+        }
+        genaratedClassSet.add(className)
+
         val file = FileSpec.builder(appPackageName, className)
                 .addType(TypeSpec.classBuilder(className)
                         .makeAbstractIfTrue(layoutRes == 0)
@@ -87,7 +96,7 @@ class AdapterProcessor : AbstractProcessor() {
             .build()
 
     private fun generateGetLayoutMethod(layoutRes: Int): FunSpec {
-       return FunSpec.builder("getLayout")
+        return FunSpec.builder("getLayout")
                 .addModifiers(KModifier.OVERRIDE)
                 .addParameter(ParameterSpec.builder("position", Int::class).build())
                 .addStatement("return $layoutRes")
@@ -97,10 +106,10 @@ class AdapterProcessor : AbstractProcessor() {
 
     private fun generateAbstractGetLayoutMethod() =
             FunSpec.builder("getLayout")
-            .addModifiers(KModifier.OVERRIDE, KModifier.ABSTRACT)
-            .addParameter(ParameterSpec.builder("position", Int::class).build())
-            .returns(Int::class)
-            .build()
+                    .addModifiers(KModifier.OVERRIDE, KModifier.ABSTRACT)
+                    .addParameter(ParameterSpec.builder("position", Int::class).build())
+                    .returns(Int::class)
+                    .build()
 
     private fun String.capitalize() = this.substring(0..0).toUpperCase() + this.substring(1)
 
