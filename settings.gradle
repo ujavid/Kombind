@@ -1,1 +1,1 @@
-include ':app', ':kombind', ':processor', ':anontation'
+include ':app', ':kombind', ':processor', ':annotation'

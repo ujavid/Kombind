@@ -56,8 +56,8 @@ class AdapterProcessor : AbstractProcessor() {
         val appPackageName = processingEnv.elementUtils.getPackageOf(element).simpleName.toString()
         val kombindAdapterName = "KombindAdapter"
         val viewHolder = "KombindAdapter.ViewHolder"
-        val fileName = element.simpleName
-        val className = "Kombind_${fileName}_Adapter"
+        val elementName = element.simpleName
+        val className = "Kombind${elementName.toString().capitalize()}Adapter"
         val file = FileSpec.builder(appPackageName, className)
                 .addType(TypeSpec.classBuilder(className)
                         .makeAbstractIfTrue(layoutRes == 0)
@@ -101,6 +101,8 @@ class AdapterProcessor : AbstractProcessor() {
             .addParameter(ParameterSpec.builder("position", Int::class).build())
             .returns(Int::class)
             .build()
+
+    private fun String.capitalize() = this.substring(0..0).toUpperCase() + this.substring(1)
 
 
     private fun TypeName.checkForAnyType() = if (this.toString().equals("com.umairjavid.kombind.model.MutableLiveArrayList<java.lang.Object>")) {
