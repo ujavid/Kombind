@@ -7,7 +7,8 @@ import com.umairjavid.kombindsample.R
 import com.umairjavid.kombindsample.model.SimpleHeader
 import com.umairjavid.kombindsample.repo.SimpleItemRepository
 import kotlinx.android.synthetic.main.activity_main.simple_item_list
-import main.KombindAdapter_MainState_Items
+import main.KombindItemsAdapter_MainState
+
 
 class MainActivity : KombindActivity<MainViewModel>() {
     override val viewModelClass = MainViewModel::class.java
@@ -23,7 +24,7 @@ class MainActivity : KombindActivity<MainViewModel>() {
     private fun setupSimpleItemList() {
         simple_item_list.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = object : KombindAdapter_MainState_Items(viewModel.state.items, viewModel) {
+            adapter = object : KombindItemsAdapter_MainState(viewModel.state.items, viewModel) {
                 override fun getLayout(position: Int) = when(items[position]) {
                     is SimpleHeader -> R.layout.item_simpleheader
                     else -> R.layout.item_simpleitem
