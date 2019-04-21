@@ -59,7 +59,7 @@ class AdapterProcessor : AbstractProcessor() {
         val viewHolder = "KombindAdapter.ViewHolder"
         val elementName = element.simpleName
         val enclosingClassName = element.enclosingElement.simpleName
-        val className = "Kombind${elementName.toString().capitalize()}Adapter_${enclosingClassName}"
+        val className = "KombindAdapter_${enclosingClassName.toString().capitalize()}_${elementName.toString().capitalize()}"
 
         if (genaratedClassSet.contains(className)) {
             messenger.printMessage(Diagnostic.Kind.ERROR, "Properties with sig not allowed,consider combinding both types into one adapter")
