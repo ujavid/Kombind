@@ -10,7 +10,7 @@ open class DialogFragmentBuilder<out T: DialogFragment>(private val clazz: Class
             val fragment = clazz.newInstance()
             fragment.arguments = arguments
             return fragment
-        } catch (e: java.lang.InstantiationException) {
+        } catch (e: InstantiationException) {
             throw RuntimeException(e)
         } catch (e: IllegalAccessException) {
             throw RuntimeException(e)
@@ -27,7 +27,7 @@ open class DialogFragmentBuilder<out T: DialogFragment>(private val clazz: Class
         val fragment = fragmentManager.findFragmentByTag(fragmentTag)
 
         return if (fragment != null) {
-            clazz.cast(fragment)
+            clazz.cast(fragment)!!
         } else {
             forceShow(fragmentManager)
         }

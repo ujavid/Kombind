@@ -11,8 +11,7 @@ import com.umairjavid.kombindsample.repo.SimpleItemRepository
 class MainViewModel(application: Application, private val simpleItemRepository: SimpleItemRepository) : KombindViewModel(application),
         SimpleItemAdapter.HeaderActionHandler,
         SimpleItemAdapter.ItemActionHandler {
-    val state = MainState()
-
+   val state = MainState()
     init {
         loadItems()
     }

@@ -1,17 +1,17 @@
 package com.umairjavid.kombind.ui
 
 import android.app.Dialog
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.umairjavid.kombind.ext.registerViewActionObserver
 
 abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment() {
@@ -28,7 +28,7 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment() {
         viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
         viewBinding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         viewBinding.setVariable(BR.viewModel, viewModel)
-        viewBinding.setLifecycleOwner(this)
+        viewBinding.lifecycleOwner = this
         registerViewActionObserver(viewModel.viewAction)
         return viewBinding.root
     }
@@ -43,7 +43,7 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment() {
         super.onViewStateRestored(savedInstanceState)
 
         val width = resources.displayMetrics.widthPixels
-        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
