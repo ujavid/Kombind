@@ -13,8 +13,7 @@ import java.util.*
 fun LifecycleOwner.registerViewActionObserver(viewActionQueue: MutableLiveData<Queue<ViewAction>>) {
     viewActionQueue.observe(this, Observer<Queue<ViewAction>> {
         while(it?.isNotEmpty() == true) {
-            val viewAction = it.remove()
-            when (viewAction) {
+            when (val viewAction = it.remove()) {
                 is ViewAction.StartActivity -> when {
                     this is Activity -> startActivity(viewAction.intent)
                     this is Fragment -> startActivity(viewAction.intent)
