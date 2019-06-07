@@ -1,8 +1,8 @@
 package com.umairjavid.kombind.ui
 
 import android.os.Bundle
-import android.app.DialogFragment
-import android.app.FragmentManager
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 
 open class DialogFragmentBuilder<out T: DialogFragment>(private val clazz: Class<T>, protected val arguments: Bundle, protected val fragmentTag: String) {
     fun build(): T {
@@ -10,7 +10,7 @@ open class DialogFragmentBuilder<out T: DialogFragment>(private val clazz: Class
             val fragment = clazz.newInstance()
             fragment.arguments = arguments
             return fragment
-        } catch (e: java.lang.InstantiationException) {
+        } catch (e: InstantiationException) {
             throw RuntimeException(e)
         } catch (e: IllegalAccessException) {
             throw RuntimeException(e)
@@ -27,7 +27,7 @@ open class DialogFragmentBuilder<out T: DialogFragment>(private val clazz: Class
         val fragment = fragmentManager.findFragmentByTag(fragmentTag)
 
         return if (fragment != null) {
-            clazz.cast(fragment)
+            clazz.cast(fragment)!!
         } else {
             forceShow(fragmentManager)
         }

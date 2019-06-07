@@ -1,17 +1,16 @@
 package com.umairjavid.kombind.ui
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.umairjavid.kombind.BR
 import com.umairjavid.kombind.model.AdapterAction
 import com.umairjavid.kombind.model.MutableLiveArrayList
 
-abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(protected val items: MutableLiveArrayList<*>) : RecyclerView.Adapter<V>() {
+abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(protected open val items: MutableLiveArrayList<*>) : androidx.recyclerview.widget.RecyclerView.Adapter<V>() {
     private lateinit var layoutInflater: LayoutInflater
     open val handler: Any? = null
     protected abstract fun getLayout(position: Int): Int
@@ -19,8 +18,7 @@ abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(protected val items:
     fun registerObserver(lifecycleOwner: LifecycleOwner) {
         items.observe(lifecycleOwner, Observer {
             while(it?.isNotEmpty() == true) {
-                val action = it.remove()
-                when (action) {
+                when (val action = it.remove()) {
                     is AdapterAction.NotifyItemRangeInserted -> notifyItemRangeInserted(action.positionStart, action.itemCount)
                     is AdapterAction.NotifyItemRangeRemoved -> notifyItemRangeRemoved(action.positionStart, action.itemCount)
                     is AdapterAction.NotifyItemRangeChanged -> notifyItemRangeChanged(action.positionStart, action.itemCount)
@@ -46,7 +44,7 @@ abstract class KombindAdapter<V: KombindAdapter.ViewHolder>(protected val items:
         holder.bind(items[position], handler)
     }
 
-    open class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+    open class ViewHolder(private val binding: ViewDataBinding) : androidx.recyclerview.widget.RecyclerView.ViewHolder(binding.root) {
         open fun bind(item: Any, handler: Any?) {
             binding.setVariable(BR.item, item)
             if (handler != null) binding.setVariable(BR.handler, handler)

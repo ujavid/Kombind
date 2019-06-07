@@ -6,7 +6,6 @@
 *.dex
 
 # Java class files
-*.class
 
 # Generated files
 bin/
@@ -34,11 +33,9 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
+.idea
 .idea/tasks.xml
-.idea/gradle.xml
 .idea/dictionaries
-.idea/libraries
 
 # Keystore files
 *.jks
@@ -53,7 +50,4 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
-.idea/misc.xml
-.idea/runConfigurations.xml
-.idea/vcs.xml
-.idea/modules.xml
+

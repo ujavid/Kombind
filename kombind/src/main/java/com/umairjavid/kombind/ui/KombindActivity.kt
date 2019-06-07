@@ -1,11 +1,11 @@
 package com.umairjavid.kombind.ui
 
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.umairjavid.kombind.BR
 import com.umairjavid.kombind.ext.registerViewActionObserver
 
@@ -22,7 +22,7 @@ abstract class KombindActivity<VM: KombindViewModel> : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, provideViewModelFactory()).get(viewModelClass)
         viewBinding = DataBindingUtil.setContentView(this, layoutResId)
         viewBinding.setVariable(BR.viewModel, viewModel)
-        viewBinding.setLifecycleOwner(this)
+        viewBinding.lifecycleOwner = this
         registerViewActionObserver(viewModel.viewAction)
         onViewLoad(savedInstanceState)
     }

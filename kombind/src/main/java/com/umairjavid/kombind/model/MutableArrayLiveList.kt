@@ -1,12 +1,15 @@
 package com.umairjavid.kombind.model
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
-import com.umairjavid.kombind.model.AdapterAction.*
-import java.util.*
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableList
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.umairjavid.kombind.model.AdapterAction.NotifyDataSetChanged
+import com.umairjavid.kombind.model.AdapterAction.NotifyItemRangeChanged
+import com.umairjavid.kombind.model.AdapterAction.NotifyItemRangeInserted
+import com.umairjavid.kombind.model.AdapterAction.NotifyItemRangeRemoved
+import java.util.Queue
 import java.util.concurrent.LinkedBlockingQueue
 
 open class MutableLiveArrayList<T: Any>(default: Collection<T>? = null) : ObservableArrayList<T>() {

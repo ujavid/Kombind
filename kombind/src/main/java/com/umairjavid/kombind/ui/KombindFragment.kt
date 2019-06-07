@@ -1,13 +1,18 @@
 package com.umairjavid.kombind.ui
 
-import android.app.Fragment
-import android.arch.lifecycle.*
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import com.umairjavid.kombind.BR
 import com.umairjavid.kombind.ext.registerViewActionObserver
 
@@ -33,15 +38,17 @@ abstract class KombindFragment<VM: KombindViewModel> : Fragment(), LifecycleOwne
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
         onBeforeViewLoad(savedInstanceState)
         viewModel = ViewModelProvider(getViewModelStore(), provideViewModelFactory()).get(viewModelClass)
-        viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
+        if (activity is KombindActivity<*>) {
+            viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
+        }
         viewBinding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         viewBinding.setVariable(BR.viewModel, viewModel)
-        viewBinding.setLifecycleOwner(this)
+        viewBinding.lifecycleOwner = this
         registerViewActionObserver(viewModel.viewAction)
         return viewBinding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         onViewLoad(savedInstanceState)
     }
 

@@ -1,12 +1,12 @@
 package com.umairjavid.kombind.ui
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.content.res.Resources
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import com.umairjavid.kombind.model.ViewAction
-import java.util.*
+import java.util.Queue
 import java.util.concurrent.LinkedBlockingQueue
 
 abstract class KombindViewModel(application: Application) : AndroidViewModel(application) {

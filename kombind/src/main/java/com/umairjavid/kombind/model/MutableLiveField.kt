@@ -1,6 +1,6 @@
 package com.umairjavid.kombind.model
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 
 open class MutableLiveField<T>(default: T? = null) : MutableLiveData<T>() {
     init {

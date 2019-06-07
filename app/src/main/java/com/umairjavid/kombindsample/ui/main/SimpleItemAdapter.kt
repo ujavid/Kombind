@@ -6,7 +6,7 @@ import com.umairjavid.kombindsample.R
 import com.umairjavid.kombindsample.model.SimpleHeader
 import com.umairjavid.kombindsample.model.SimpleItem
 
-class SimpleItemAdapter(private val items: MutableLiveArrayList<Any>, override val handler: Any?) : KombindAdapter<KombindAdapter.ViewHolder>(items) {
+class SimpleItemAdapter(override val items: MutableLiveArrayList<Any>, override val handler: Any?) : KombindAdapter<KombindAdapter.ViewHolder>(items) {
     override fun getLayout(position: Int) =
             if (items[position] is SimpleHeader) R.layout.item_simpleheader else R.layout.item_simpleitem
 

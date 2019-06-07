@@ -1,16 +1,21 @@
 package com.umairjavid.kombind.ui
 
 import android.app.Dialog
-import android.app.DialogFragment
-import android.arch.lifecycle.*
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import com.android.databinding.library.baseAdapters.BR
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.databinding.library.baseAdapters.BR
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import com.umairjavid.kombind.ext.registerViewActionObserver
 
 abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment(), LifecycleOwner, ViewModelStoreOwner {
@@ -38,12 +43,12 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment(), L
         viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
         viewBinding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         viewBinding.setVariable(BR.viewModel, viewModel)
-        viewBinding.setLifecycleOwner(this)
+        viewBinding.lifecycleOwner = this
         registerViewActionObserver(viewModel.viewAction)
         return viewBinding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         onViewLoad(savedInstanceState)
     }
 
@@ -53,7 +58,7 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment(), L
         super.onViewStateRestored(savedInstanceState)
 
         val width = resources.displayMetrics.widthPixels
-        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
