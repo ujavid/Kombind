@@ -22,7 +22,7 @@ abstract class KombindActivity<VM: KombindViewModel> : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, provideViewModelFactory()).get(viewModelClass)
         viewBinding = DataBindingUtil.setContentView(this, layoutResId)
         viewBinding.setVariable(BR.viewModel, viewModel)
-        viewBinding.setLifecycleOwner(this)
+        viewBinding.lifecycleOwner = this
         registerViewActionObserver(viewModel.viewAction)
         onViewLoad(savedInstanceState)
     }
