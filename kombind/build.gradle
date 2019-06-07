@@ -16,7 +16,7 @@ project.ext {
 
     support_library_version = '27.1.1'
     androidx_appcompat = '1.0.2'
-    android_material = '1.1.0-alpha01'
+    android_material = '1.1.0-alpha07'
     lifecycle_version = '2.0.0'
     junit_version = '4.12'
     test_runner_version = '1.1.0'

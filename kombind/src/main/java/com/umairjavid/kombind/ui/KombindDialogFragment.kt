@@ -25,10 +25,12 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment() {
         setStyle(STYLE_NO_FRAME, 0)
         onBeforeViewLoad(savedInstanceState)
         viewModel = ViewModelProviders.of(this, provideViewModelFactory()).get(viewModelClass)
-        viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
+        if (activity is KombindActivity<*>) {
+            viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
+        }
         viewBinding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         viewBinding.setVariable(BR.viewModel, viewModel)
-        viewBinding.setLifecycleOwner(this)
+        viewBinding.lifecycleOwner = this
         registerViewActionObserver(viewModel.viewAction)
         return viewBinding.root
     }
@@ -43,7 +45,7 @@ abstract class KombindDialogFragment<VM: KombindViewModel> : DialogFragment() {
         super.onViewStateRestored(savedInstanceState)
 
         val width = resources.displayMetrics.widthPixels
-        dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

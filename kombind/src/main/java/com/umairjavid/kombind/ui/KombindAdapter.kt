@@ -19,8 +19,7 @@ abstract class KombindAdapter<VH: KombindAdapter.ViewHolder>(protected val items
     fun registerObserver(lifecycleOwner: LifecycleOwner): KombindAdapter<VH> {
         items.observe(lifecycleOwner, Observer {
             while(it?.isNotEmpty() == true) {
-                val action = it.remove()
-                when (action) {
+                when (val action = it.remove()) {
                     is AdapterAction.NotifyItemRangeInserted -> notifyItemRangeInserted(action.positionStart, action.itemCount)
                     is AdapterAction.NotifyItemRangeRemoved -> notifyItemRangeRemoved(action.positionStart, action.itemCount)
                     is AdapterAction.NotifyItemRangeChanged -> notifyItemRangeChanged(action.positionStart, action.itemCount)
