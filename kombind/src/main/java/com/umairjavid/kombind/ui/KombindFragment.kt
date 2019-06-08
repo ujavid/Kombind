@@ -22,7 +22,9 @@ abstract class KombindFragment<VM: KombindViewModel> : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         onBeforeViewLoad(savedInstanceState)
         viewModel = ViewModelProviders.of(this, provideViewModelFactory()).get(viewModelClass)
-        viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
+        if (activity is KombindActivity<*>) {
+            viewModel.activityViewModel = (activity as KombindActivity<*>).viewModel
+        }
         viewBinding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
         viewBinding.setVariable(BR.viewModel, viewModel)
         viewBinding.setLifecycleOwner(this)
